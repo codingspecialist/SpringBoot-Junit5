@@ -1,9 +1,11 @@
 package com.cos.book.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -16,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 
 import com.cos.book.domain.Book;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 
 /**
  * 통합 테스트 하는 법
@@ -24,9 +28,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 팁 : SpringBootTest(class= {BookController.class, BookService.class, BookRepository.class}) 이렇게 필요한 빈만 올릴 수 도 있음.
  */
 
-// TestRestTemplate 별로네... Mockito가 나음.
+// TestRestTemplate는 security, filter등을 다 테스트할 때 사용해보자.
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT) // 실제 내장 톰켓이 랜덤 포트로 올라온다. 
-public class BookControllerIRandomPortTest {
+public class BookControllerIRestTemplateTest {
 	
 	@Autowired
     private TestRestTemplate restTemplate;
@@ -50,9 +54,10 @@ public class BookControllerIRandomPortTest {
 		ResponseEntity<String> response = restTemplate.exchange("/book", HttpMethod.POST, request, String.class);
 		
 		// then
+		DocumentContext dc = JsonPath.parse(response.getBody());
+		String author = dc.read("$.author");
 		assertEquals(201, response.getStatusCodeValue());
-		System.out.println(response.getBody());
-		//assertEquals("", response.getBody());
+		assertEquals("코스", author);
 	}
 	
 	
@@ -73,6 +78,9 @@ public class BookControllerIRandomPortTest {
 		System.out.println(response.getBody());
 		
 		// then
+		DocumentContext dc = JsonPath.parse(response.getBody());
+		String author = dc.read("$.[0].author");
 		assertEquals(200, response.getStatusCodeValue());
+		assertEquals("코스", author);
 	}
 }
