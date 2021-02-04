@@ -13,7 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
 import com.cos.book.domain.Book;
 import com.cos.book.domain.BookRepository;
 
-@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class) // 작은 단위의 단위 테스트시 사용
 public class BookServiceTest {
 
@@ -27,6 +26,8 @@ public class BookServiceTest {
 	
 	@Test
 	public void 저장하기_테스트() {
+
+		// BODMocikto 방식
 		// given
 		Book book = new Book();
 		book.setTitle("책제목1");

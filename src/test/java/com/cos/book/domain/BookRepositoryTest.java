@@ -17,6 +17,7 @@ public class BookRepositoryTest {
 	@Autowired
 	private BookRepository bookRepository;
 	
+	// @Transactional(propagation = Propagation.NOT_SUPPORTED) // 자동 트랜잭션 기능 취소하려면?
 	@Test
 	public void save_테스트() { // 실제 DB로 테스트 하고 Rollback 된다.
 		// given
@@ -27,6 +28,8 @@ public class BookRepositoryTest {
 		
 		// test execute
 		Book bookEntity = bookRepository.save(book);
+		
+
 		
 		// then
 		assertEquals("책제목1", bookEntity.getTitle());
