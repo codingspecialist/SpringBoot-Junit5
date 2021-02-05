@@ -28,7 +28,7 @@ import com.jayway.jsonpath.JsonPath;
  * 팁 : SpringBootTest(class= {BookController.class, BookService.class, BookRepository.class}) 이렇게 필요한 빈만 올릴 수 도 있음.
  */
 
-// TestRestTemplate는 security, filter등을 다 테스트할 때 사용해보자.
+// TestRestTemplate는 MSA할 때....
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT) // 실제 내장 톰켓이 랜덤 포트로 올라온다. 
 public class BookControllerIRestTemplateTest {
 	
